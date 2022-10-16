@@ -37,7 +37,7 @@ module.exports = {
   
       devMiddleware: {
         writeToDisk: true
-     }
+    }
   
     },
   
@@ -45,41 +45,34 @@ module.exports = {
     module: {
 
       rules: [
- 
         {
- 
           test: /\.html$/,
- 
           use: [
- 
             { 
- 
-   loader: 'html-loader',
- 
+  loader: 'html-loader',
               options: {
- 
-             minimize: true,
- 
-           }
+            minimize: true,
           }
- 
+          }
           ],
- 
         },
- 
         {
- 
           test: /\.css$/,
- 
           use: [
- 
+            {
               //'style-loader',
- 
-          MiniCssExtractPlugin.loader,
-            'css-loader'
- 
+              loader: MiniCssExtractPlugin.loader, 
+
+              options: {
+
+                publicPath: '../' 
+
+              }
+
+            },
+            'css-loader',
+
           ]
- 
         },
         {
 
@@ -100,25 +93,30 @@ module.exports = {
               }
             }
           ]
-        }  
-        
- 
-      ]
- 
+        },
+        {
+
+          test: /\.(svg|eot|woff|woff2|ttf)$/,
+          use: [ 
+            { 
+              loader: "file-loader",  
+              options: { 
+                name: '[name].[ext]', 
+                outputPath: "fonts", 
+                esModule: false,
+              }  
+            }
+          ] 
+        },
+  ]  
     },
- 
-   plugins: [
- 
-     new HtmlWebpackPlugin({
- 
-       filename: "index.html",
- 
-       template: "./src/index.html",
- 
-     }),
- 
-     new MiniCssExtractPlugin({filename: "css/style.css"}),
-     new OptimizeCSSAssetsPlugin({}),
- 
+    
+  plugins: [
+    new HtmlWebpackPlugin({
+      filename: "index.html",
+      template: "./src/index.html",
+    }),
+    new MiniCssExtractPlugin({filename: "css/style.css"}),
+    new OptimizeCSSAssetsPlugin({}),
     ],
-   };
+  };
